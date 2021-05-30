@@ -55,6 +55,13 @@
     <button>Trigger a Global Error</button>
   </section>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script>
+  window.TrackJS && TrackJS.install({ 
+    token: "f57ced46fe0f4993b59a046f962d08f4"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+</script>
   <script>
     let calculateBtn = document.querySelector('#calculate');
     calculateBtn.addEventListener('click', () => {
@@ -62,11 +69,84 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
+      try {
+      if (firstNum === "" || secondNum === "") {
+        TrackJS.track('Testing TrackJS!');
+      throw new gang("tis broken"); 
+      }
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+     
+    }
+    catch (err) {
+      if (err.name == "gang") {
+        console.log("gang error");
+      }
+    }
+    finally {
+      console.log("sdkafljslfkasdf");
+    }
+      
+      
     });
-
+    
+    
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
     // TODO - Make buttons functional
+    errorBtns[0].addEventListener('click', () => {
+      console.log("Console Log Demo");
+    });
+    errorBtns[1].addEventListener('click', () => {
+      console.error("Console Error Demo");
+    });
+    errorBtns[2].addEventListener('click', () => {
+      console.dir(errorBtns);
+    });
+    errorBtns[3].addEventListener('click', () => {
+      console.dirxml(document.body);
+    });
+    errorBtns[4].addEventListener('click', () => {
+      console.group("Group Start");
+    });
+    errorBtns[5].addEventListener('click', () => {
+      console.groupEnd("Group End");
+    });
+    errorBtns[6].addEventListener('click', () => {
+      console.table([{name: "Tri", age: 21}, {name: "Tony", age: 54}, {name: "Tom", age: 18}]);
+    });
+    errorBtns[7].addEventListener('click', () => {
+      console.log("Timer Start");
+      console.time();
+    });
+    errorBtns[8].addEventListener('click', () => {
+      console.log("Timer End");
+      console.timeEnd();
+    });
+    errorBtns[9].addEventListener('click', () => {
+      let a = () => {b();};
+      let b = () => {c();};
+      let c = () => {d();};
+      let d = () => {console.trace();};
+      a(); 
+    });
+    errorBtns[10].addEventListener('click', () => {
+      try {
+        throw new SyntaxError();
+      }
+      catch {
+        console.error("Syntax Error");
+      }
+      finally {
+        console.log("slkfdjklsdjfsd");
+      }
+    });
+
+    class gang extends Error {
+      constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+      }
+    }
+  
   </script>
 </body>
 </html>
